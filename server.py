@@ -2,4 +2,5 @@ from dumpster import Dumpster
 
 if __name__ == "__main__":
     d = Dumpster()
-    print(d.to_bytes)
+    d.write_to_dump()
+    d.read_from_dump()
