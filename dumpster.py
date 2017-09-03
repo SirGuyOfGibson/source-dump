@@ -78,7 +78,7 @@ class Dumpster():
 		with open(self.name+'.'+self.extension, 'rb') as dump:
 			for line in dump:
 				for byte in line:
-					print(byte'\n')
+					print(byte + '\n')
 
 
 		
