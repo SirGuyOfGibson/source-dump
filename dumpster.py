@@ -3,13 +3,13 @@ class Dumpster():
 	NAME_SIZE = 10
 	EXT_SIZE = 4
 
-	def __init__(self):
+	def __init__(self,name):
 		self.header = b''
 		self.header_size = 0
 		self.num_children = 0					#[0, 255]
 		self.mem_addresses = []
 		self.is_file = False
-		self.name = 'file'
+		self.name = name
 		self.extension = 'dmp'
 
 	def to_bytes(self):
@@ -79,6 +79,7 @@ class Dumpster():
 					print(byte + '\n')
 
 
+	
 
 
 
