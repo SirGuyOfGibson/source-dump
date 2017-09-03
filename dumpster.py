@@ -1,5 +1,5 @@
 class Dumpster():
-	
+
 	NAME_SIZE = 10
 	EXT_SIZE = 4
 
@@ -9,10 +9,8 @@ class Dumpster():
 		self.num_children = 0					#[0, 255]
 		self.mem_addresses = []
 		self.is_file = False
-		self.name = ''
-		self.extension = 'dmp'	
-
-		self.init_header()
+		self.name = 'file'
+		self.extension = 'dmp'
 
 	def to_bytes(self):
 		if self.is_file:
@@ -20,17 +18,17 @@ class Dumpster():
 		else:
 			cmd = 0
 
-		self.header_size = 4 + num_children*4 + NAME_SIZE + EXT_SIZE				#Size of headerr in bytes
+		self.header_size = 4 + self.num_children*4 + Dumpster.NAME_SIZE + Dumpster.EXT_SIZE				#Size of headerr in bytes
 
 		hs = hex(self.header_size)
 
 		n = len(hs)-2
 
 		if n == 1:
-			a = 0
+			a = '0'
 			b = hs[3]
 		if n == 2:
-			a = 0
+			a = '0'
 			b = hs[3:5]
 		if n == 3:
 			a = hs[3]
@@ -39,7 +37,7 @@ class Dumpster():
 			a = hs[3:5]
 			b = hs[5:7]
 
-		header_array = [cmd,a,b,self.num_children]
+		header_array = [cmd,int(a, 16),int(b, 16), self.num_children]
 
 
 
@@ -48,27 +46,27 @@ class Dumpster():
 		filename_array = bytearray(self.name,'utf-8')
 		s = len(filename_array)
 
-		for i in range(0,NAME_SIZE-s):
+		for i in range(0,Dumpster.NAME_SIZE-s):
 			header_array.append(0)
 
 		for i in range(0,s):
-			header_array.append(filename_array[s])
+			header_array.append(filename_array[i])
 
 
 
-		
+
 		#Adding extension bytes to header array
 
 		extension_array = bytearray(self.extension,'utf-8')
 		s = len(extension_array)
 
-		for i in range(0,EXT_SIZE-s):
+		for i in range(0,Dumpster.EXT_SIZE-s):
 			header_array.append(0)
 
 		for i in range(0,s):
-			header_array.append(extension_array[s])
+			header_array.append(extension_array[i])
 
-		return header_array
+		return bytearray(header_array)
 
 	def write_to_dump(self):
 		with open(self.name+'.'+self.extension, 'wb') as dump:
@@ -81,7 +79,6 @@ class Dumpster():
 					print(byte + '\n')
 
 
-		
 
 
 
@@ -89,4 +86,4 @@ class Dumpster():
 
 
 
-		
+
