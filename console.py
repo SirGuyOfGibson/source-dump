@@ -17,7 +17,7 @@ while running:
         Dumpster(name).write_to_dump()
 
     if i == 'list':
-        if selected is 'none':    #list currrent working directory
+        if selected is '':    #list currrent working directory
             dirs = ''
             lcd = os.listdir()
             for file in lcd:
@@ -25,8 +25,8 @@ while running:
                     dirs+= ' '+file.strip('.dmp')
             print(dirs)
 
-        else:                    #list selected dump
-            #.......................................
+        else:                 #list selected dump
+            pass
 
     if i[0:6] == 'select':
         name = i[7:]

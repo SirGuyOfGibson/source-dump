@@ -27,16 +27,16 @@ class Dumpster():
 
 		if n == 1:
 			a = '0'
-			b = hs[3]
+			b = hs[2]
 		if n == 2:
 			a = '0'
-			b = hs[3:5]
+			b = hs[2:4]
 		if n == 3:
-			a = hs[3]
-			b = hs[4:6]
+			a = hs[2]
+			b = hs[3:5]
 		if n == 4:
-			a = hs[3:5]
-			b = hs[5:7]
+			a = hs[2:4]
+			b = hs[3:6]
 
 		header_array = [cmd,int(a, 16),int(b, 16), self.num_children]
 
@@ -67,12 +67,12 @@ class Dumpster():
 
 		return bytearray(header_array)
 
-	
+
 	#Takes the dmp file and creates a dumpster object
 	def from_bytes(dmp):
 		dumpster = Dumpster(dmp.strip(".dmp"))		#Lower case dumpster is object. Objects are lower case. Always
-		bl = read_from_dump(dmp)
-		file_flag = bl[0]
+		b = Dumpster.read_from_dump(dmp)
+		file_flag = b[0]
 		dumpster.is_file = file_flag>>7 and 1
 		dumpster.header_size = int(b[1])*256 + int(b[2])
 		dumpster.num_children = int(b[3])
@@ -82,20 +82,20 @@ class Dumpster():
 
 		for i in range(4,Dumpster.NAME_SIZE + 4 + Dumpster.EXT_SIZE):
 			if i < Dumpster.NAME_SIZE + 5:
-				if b[i] = 32:
+				if b[i] == 32:
 					pass
 				else:
 					n += chr(b[i])
 			else:
-				if b[i] = 32:
+				if b[i] == 32:
 					pass
 				else:
-					e += chr(b[i])	
+					e += chr(b[i])
 
 		dumpster.name = n
 		dumpster.extension = e
 
-		return dumpster	
+		return dumpster
 
 
 	def write_to_dump(self):
@@ -111,7 +111,7 @@ class Dumpster():
 		return bytelist
 
 
-	
+
 
 
 
