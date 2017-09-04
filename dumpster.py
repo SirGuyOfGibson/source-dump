@@ -2,6 +2,7 @@ class Dumpster():
 
 	NAME_SIZE = 10
 	EXT_SIZE = 4
+	UTF_SPACE = 32
 
 	def __init__(self,name):
 		self.header = b''
@@ -39,15 +40,13 @@ class Dumpster():
 
 		header_array = [cmd,int(a, 16),int(b, 16), self.num_children]
 
-
-
-		#Adding filename bytes to header array
+		#Adding filename to header array
 
 		filename_array = bytearray(self.name,'utf-8')
 		s = len(filename_array)
 
 		for i in range(0,Dumpster.NAME_SIZE-s):
-			header_array.append(0)
+			header_array.append(Dumpster.UTF_SPACE)
 
 		for i in range(0,s):
 			header_array.append(filename_array[i])
@@ -61,22 +60,55 @@ class Dumpster():
 		s = len(extension_array)
 
 		for i in range(0,Dumpster.EXT_SIZE-s):
-			header_array.append(0)
+			header_array.append(Dumpster.UTF_SPACE)
 
 		for i in range(0,s):
 			header_array.append(extension_array[i])
 
 		return bytearray(header_array)
 
+	
+	#Takes the dmp file and creates a dumpster object
+	def from_bytes(dmp):
+		dumpster = Dumpster(dmp.strip(".dmp"))		#Lower case dumpster is object. Objects are lower case. Always
+		bl = read_from_dump(dmp)
+		file_flag = bl[0]
+		dumpster.is_file = file_flag>>7 and 1
+		dumpster.header_size = int(b[1])*256 + int(b[2])
+		dumpster.num_children = int(b[3])
+
+		n = ''
+		e = ''
+
+		for i in range(4,Dumpster.NAME_SIZE + 4 + Dumpster.EXT_SIZE):
+			if i < Dumpster.NAME_SIZE + 5:
+				if b[i] = 32:
+					pass
+				else:
+					n += chr(b[i])
+			else:
+				if b[i] = 32:
+					pass
+				else:
+					e += chr(b[i])	
+
+		dumpster.name = n
+		dumpster.extension = e
+
+		return dumpster	
+
+
 	def write_to_dump(self):
 		with open(self.name+'.'+self.extension, 'wb') as dump:
 			dump.write(self.to_bytes())
 
-	def read_from_dump(self):
-		with open(self.name+'.'+self.extension, 'rb') as dump:
+	def read_from_dump(dmp):
+		bytelist = []
+		with open(dmp, 'rb') as dump:
 			for line in dump:
 				for byte in line:
-					print(byte + '\n')
+					bytelist.append(byte)
+		return bytelist
 
 
 	
