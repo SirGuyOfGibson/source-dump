@@ -4,12 +4,13 @@ class Dumpster():
 	EXT_SIZE = 4
 	UTF_SPACE = 32
 
-	def __init__(self,name):
+	def __init__(self,name, size):
 		self.header = b''
 		self.header_size = 0
 		self.num_children = 0					#[0, 255]
 		self.mem_addresses = []
 		self.is_file = False
+        self.size = size
 		self.name = name
 		self.extension = 'dmp'
 

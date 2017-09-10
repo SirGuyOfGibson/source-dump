@@ -13,8 +13,9 @@ while running:
         running = False
 
     if i[0:6] == 'create':
-        name = i[7:]
-        Dumpster(name).write_to_dump()
+        name = input('name: ')
+        size = input('size: ')
+        Dumpster(name, size).write_to_dump()
 
     if i == 'list':
         if selected is '':    #list currrent working directory
